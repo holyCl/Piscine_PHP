@@ -1,0 +1,46 @@
+body {
+	background-color: #d1e2ff;
+}
+
+.wrap {
+	text-align: center;
+}
+
+.all {
+	display: inline-block;
+	width: 1600px;
+}
+
+.blocks {
+	height: 325px;
+	width: 1595px;
+}
+
+header {
+	height: 70px;
+	font-size: 300%;
+	font-family: "Comic Sans MS", cursive;
+	text-decoration: none;
+}
+
+.item1 {
+	height: 100px;
+	width: 100px;
+	display: inline-block;
+	position: relative;
+	padding-left: 50px;
+	padding-right: 50px;
+	text-decoration: none;
+	font-family: "Comic Sans MS", cursive;
+}
+
+.menu {
+	text-align: right;
+	height: 50px;
+	font-size: 250%;
+}
+
+.item {
+	width: 50px;
+	height: 50px;
+}

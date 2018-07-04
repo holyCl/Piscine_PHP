@@ -1,0 +1,84 @@
+<style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
+        body {
+        background-image : url(http://hdqwalls.com/download/low-poly-fox-new-3840x2400.jpg);
+        }
+        @media only screen and (max-width: 600px) 
+        {
+            table {
+                width: auto;
+                margin-right: 10px;
+            }
+            td {
+                width: auto;
+                padding: 0px;
+                margin: 0;
+            }
+
+        }
+        .container  {
+            max-width: 1500px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+        color:white;
+        }       
+        table{
+
+        display: table;
+        border: 3px solid white;
+        color: #fffffe;
+        max-width: 1500px;
+        width: 100%;
+        height: 700px;
+        }
+
+        td {
+            min-width: 5px;
+            max-width: 60px;
+        }
+        p {
+            font-size: 0.5rem;
+            margin: 0;
+        }
+        .blue {
+            border:3px solid #fffffe;
+            background-color: 00325d;
+        }
+        .orange {
+            border:3px solid #fffffe;
+            background-color: #d97026;
+        }
+        .gray {
+            border:3px solid #fffffe;
+            background-color: #c6cabc;
+        }
+        .green {
+            border:3px solid #fffffe;
+            background-color: #87b94d
+        }
+
+        .verti{
+            font-size: 1rem;
+            text-align: left;
+        }
+        .mass {
+            font-size: 1rem;
+            text-align: right;
+        }
+        .zn {
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+            font-size: 2rem;
+        }
+    p {
+        text-align: right;
+        font-family: monospace;
+        font-size: 1.5rem;
+        color: #fffffe;
+    }
+
+    </style>
