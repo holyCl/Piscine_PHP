@@ -1,6 +1,8 @@
-<?php
-	session_start();
-	$_SESSION['log_user'] = NULL;
-	session_destroy();
-	header("Location: index.php");
+<?php 
+session_start();
+if (isset($_SESSION['login']))
+    unset($_SESSION['login']);
+if (isset($_SESSION['id']))
+	unset($_SESSION['id']);
+header('Location: index.php');
 ?>

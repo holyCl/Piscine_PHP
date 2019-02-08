@@ -1,180 +1,154 @@
+<?php 
+
+function str_db($sql, $conn)
+{
+    $res = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($res);
+    return ($row);
+}
+    require_once "install.php";
+    session_start();
+    if (!isset($_SESSION['login']))
+        $_SESSION['id'] = 0;
+    $hi = strstr($_SERVER['QUERY_STRING'],"tovar");
+    if (strstr($_SERVER['QUERY_STRING'],"tovar"))
+    {
+       $id = preg_replace('~\D~', '',  $_SERVER['QUERY_STRING']);  
+        $sql2 = "SELECT * FROM tovars WHERE id='$id'";
+        $row2 = str_db($sql2, $conn);
+        $product = $row2['product'];
+        $cat = $row2['category'];
+        $price = $row2['price'];
+        $photo = $row2['photo'];
+        $sql2 = "INSERT INTO busket (id, product, category, price, photo, user_id)
+                VALUES (id, '$product', '$cat', '$price', '$photo', '$_SESSION[id]')";
+        if (mysqli_query($conn, $sql2)) {
+            //header("Location: index.php");
+        }
+    }
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<title>online</title>
-	<link rel="stylesheet" type="text/css" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/manu.css">
+    <title>Main</title>
 </head>
 
 <body>
-	<div class="wrap">
-		<div class="all">
-			<header>
-				<center>
-					Актер на ночь
-				</center>
-			</header>
-			<div class="menu">
-				<?php
-				include 'auth.php';
-				session_start();
-				if (!isset($_SESSION['login_user']))
-					$_SESSION['login_user'] = NULL;
-				 if ($_SESSION['login_user'] != NULL){
-					echo '<a href="logout.php"><img class="item" src="https://png.icons8.com/metro/1600/exit.png"></a>
-					<a href="index_modify.php"><img class="item" src="https://png.icons8.com/metro/1600/edit.png"></a>';
-				}	
-					  else {
-				echo '<a href="index_login.php"><img class="item" src="http://pngimages.net/sites/default/files/login-png-image-54490.png"></a>';
-	 			}
-	 			
-				echo '<a  href="basket.php"><img class="item" src="http://s1.iconbird.com/ico/2014/1/633/w512h5121390856920buy512.png"></a>';
-				echo '<p align="right">
-					<b>Здравствуй ';
-					 if ($_SESSION['login_user'] == NULL) echo "GUEST";
-				else
-					echo $_SESSION['login_user']; 
-				?>
-					
-				</b></p>
-			</div>
+    <header class="head wrapper">
+        <nav class="navigation">
+            <a href="index.php" class="logo">
+                <p class="logo-text">art</p>
+            </a>
+            <ul class="menu">
+<!--                 <li class="list"><a href="index.php">Home</a></li>
+ -->                <li class="list"><a href="about.php">About us</a></li>
+                <!-- <li class="list"><a href="#">Page</a></li> -->
+                <li class="list"><a href="order.php">Cart</a></li>
+                <?php if(!isset($_SESSION['login'])){?>
+                    <li class="list"><a href="login.php">Login</a></li>
+                <?php }?>
+                <?php if(isset($_SESSION['login'])){?>
+                    <li class="list"><a href="#">PRIVET <?php echo $_SESSION['login'];?></a></li>
+                    <li class="list"><a href="logout.php">LOGOUT</a></li>
+                <?php }?>
+            </ul>
+        </nav>
+    </header>
 
-			<div class="content">
-				<div class="blocks">
-					<div class="font"><b>Мужчины</b></div>
-					<div class="miniblocks">
-						<p class="name_cont">Дженсен Эклз. Цена 1000$/час<br></p>
-						<img class="photo imgs" src="https://pbs.twimg.com/profile_images/3453828124/101f5ef121423ecafbdf9fb1b73d2b02_400x400.jpeg">
-						<div class="info">Из этого парня пытались изгнать демона много раз, но демона страсти так просто не выгнать</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Дженсен Эклз" />
-						<input type="hidden" name="price" value="1000$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-					</div>
-					<div class="miniblocks">
-						<p class="name_cont">Райан Рейнольдс. Цена 4200$/час<br></p>
-						<div class="info">Этот парень знает как правильно поздравить девушку с 8 марта!</div>
-						<img class="photo imgs" src="http://www.intermedia.ru/img/news/323442.jpg">
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Райан Рейнольдс" />
-						<input type="hidden" name="price" value="4200$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-					</div>
-					<div class="miniblocks">
-						<p class="name_cont">Джеймс Макэвой. Цена 800$/час<br></p>
-						<div class="info">Если вы хотите одновременно умного и красивого актера, то Джеймс Макэвой - ваш идеал!</div>
-						<img class="photo imgs" src="https://starwiki.org/thumbs/photos/men-james-mcavoy-red/001-men-james-mcavoy-red-starwiki.org.jpg">
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Джеймс Макэвой" />
-						<input type="hidden" name="price" value="800$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-					</div>
-					<div class="miniblocks">
-						<p class="name_cont">Шерлок Холмс. Цена 1500$/час<br></p>
-						<img class="photo imgs" src="https://kievpravda.com/media/images/34933/main/400.jpg">
-						<div class="info">Если вы считаете себя гением, то Шелок вам докажет обратное!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Шерлок Холмс" />
-						<input type="hidden" name="price" value="1500$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-					</div>
-					<div class="miniblocks">
-						<p class="name_cont">Крис Хемсворт Цена 2500$/час<br></p>
-						<img class="photo imgs" src="https://cdn.familyfuncanada.com/wp-content/uploads/2016/01/chris-hemsworth-thor-interview-10062011__square.jpg">
-						<div class="info">Он не только Бог в фильме, но и еще божественен в постели!
-						</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Крис Хемсворт" />
-						<input type="hidden" name="price" value="2500$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-					</div>
-				</div>
-					<div class="blocks">
-						<div class="font"><b>Женщины</b></div>
-						<div class="miniblocks">
-							<p class="name_cont">Элизабет Олсен. Цена 1500$/час<br></p>
-							<img class="photo imgs" src="https://pp.userapi.com/c637525/v637525317/527da/ckBSL1Ya6ss.jpg?ava=1">
-							<div class="info">Если вам хочется чего-то колдовского - это идеальный  вариант!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Элизабет Олсен" />
-						<input type="hidden" name="price" value="1500$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-						</div>
-						<div class="miniblocks">
-							<p class="name_cont">Черная Вдова. Цена уточняется<br></p>
-							<img class="photo imgs" src="https://vokrug.tv/pic/news/c/1/2/d/c12db21a03b70e9fae97ddc88aaa950b.jpeg">
-							<div class="info">Она вас уложит одной правой не только на землю, но еще и в постель!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Черная Вдова" />
-						<input type="hidden" name="price" value="???" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-						</div>
-						<div class="miniblocks">
-							<p class="name_cont">Галь Гадот. Цена 3500$/час<br></p>
-							<img class="photo imgs" src="https://pp.userapi.com/c639318/v639318087/6bf8c/uOJYiFdPovk.jpg?ava=1">
-							<div class="info">Эта красотка умеет использовать свое лассо не только во имя добра, но и во имя разврата!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Галь Гадот" />
-						<input type="hidden" name="price" value="3500$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-						</div>
-						<div class="miniblocks">
-							<p class="name_cont">Марго Робби. Цена 1000$/час<br></p>
-							<img class="photo imgs" src="http://novostimira.com/userfiles/30(63).jpeg">
-							<div class="info">Если вы спросите у нее знает ли она откуда у вас эти шрамы, то она вся ваша!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Марго Робби" />
-						<input type="hidden" name="price" value="1000$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-						</div>
-						<div class="miniblocks">
-							<p class="name_cont">Кира Найтли. Цена 1900$/час<br></p>
-							<img class="photo imgs" src="http://novostimira.com/userfiles/60(34).jpg">
-							<div class="info">Если вы регулярно пользуетесь торрентом, то она будет рада провести с вами время!</div>
-						<br>
-						<br>
-						<form  action="order.php" method="post">
-						<input type="hidden" name="actor" value="Кира Найтли" />
-						<input type="hidden" name="price" value="1900$" />
-						<input class = 'order_bt' name="submit" value="submit" type="submit" />
-						</form>
-						</div>
-					</div>
-			</div>
-			<footer>
-				<hr>
-				<p align="right"> &#169; ollevyts ivoloshi 2018</p>
-			</footer>
-		</div>
-	</div>
+    <div class="slider-box">
+        <img src="img/slide.png" alt="girls" width="1600" height="600" class="slider-pic">
+    <!--     <p class="slider-name">AFFordableE PARIS TOURS </p>
+        <p class="slider-text">CITY TOURS/ TOUR TICKETS / TOUR GUIDES</p> -->
+        <button class="slider-buton prev">&#8249;</button>
+        <button class="slider-buton next">&#8250;</button>
+
+    </div>
+
+    <main>
+        <div class="wrapper">
+            <h2>New Collection</h2>
+
+        <div class="dropdown">
+            <button class="dropbtn">Categories</button>
+                <div class="dropdown-content">
+                  <a href="index.php?1">ALL</a>
+                  <a href="index.php?2">MAN</a>
+                  <a href="index.php?3">WOMAN</a>
+                  <a href="index.php?4">KIDS</a>
+                </div>
+        </div>
+            <ul class="products clearfix">
+
+            <?php
+            $sql2 = "SELECT * FROM tovars";
+            $res = mysqli_query($conn, $sql2);
+            if (!strstr($_SERVER['QUERY_STRING'],"tovar")){
+                $id = preg_replace('~\D~', '',  $_SERVER['QUERY_STRING']);
+                    if ($id >= 1 && $id <= 4)
+                    {   echo $id;
+                        if ($id == 1)
+                             $prod = 1;
+                        if ($id == 2)
+                            $prod = "category = 'MAN'";
+                        if ($id == 3)
+                            $prod = "category = 'WOMAN'";
+                        if ($id == 4)
+                            $prod = "category = 'KIDS'";
+                        $sql2 = "SELECT * FROM tovars WHERE ".$prod;
+            
+                        $res = mysqli_query($conn, $sql2);
+                        // if ($res = mysqli_query($conn, $sql2)) {
+                        //     header("Location: index.php");
+                        // }
+                    }
+                }
+                while ($row = mysqli_fetch_assoc($res))
+                {
+                    echo "<li class=\"item\">
+                    <img src=$row[photo] alt=$row[product] width=\"255\" height=\"322\" class=\"item-image\">
+                    <div class=\"item-description\">
+                        <p class=\"item-name\">$row[product]</p>
+                        <p class=\"item-price\">\$$row[price]</p>
+                    </div>
+                    <div class=\"overlay\">
+                        <ul class=\"over-icons\">
+                            <li class=\"icons-list first\">
+                                <img src=\"img/like.png\" alt=\"like\" class=\"icon\">
+                            </li>
+                            <li class=\"icons-list second\">
+                                <img src=\"img/arrow.png\" alt=\"arrows\" class=\"icon\">
+                            </li>
+                            <li class=\"icons-list third\">
+                                <img src=\"img/clock.png\" alt=\"clock\" class=\"icon\">
+                            </li>
+                            <li class=\"icons-list cart-icon\">
+                                <form method=\"post\" action=\"index.php?tovar$row[id]\">
+                                        <button type=\"submit\" name=\"$row[id]\" ><img src=\"img/cart.png\" alt=\"cart\" class=\"icon cart\"> Add to cart </button>
+                                </form> 
+                            </li>
+                        </ul>
+                    </div>
+                </li>" ;}
+                ?>
+            </ul>
+        </div>
+    </main>
+    <footer class="page-footer">
+        <div class="wrapper">
+            <p class="footer-text">All Rights Reserved | Designed by © olaktion & ivoloshi </p>
+<!--             <p class="footer-text footer-color">olaktion && ivoloshi</p>
+ -->        </div>
+    </footer>
 </body>
 
 </html>
